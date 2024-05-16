@@ -12,12 +12,12 @@ function AllExpenses() {
 
 
   const expensesCtx = useContext(ExpensesContext);
-  // console.log('expensesCtxAll', expensesCtx.expenses);
+  console.log('expensesCtxAll', expensesCtx.expenses);
   useEffect(() => {
 
     async function getExpenses() {
       const data = await fetchExpenses();
-      console.log('data', data);
+      // console.log('data', data);
       expensesCtx.setExpenses(data);
 
     }

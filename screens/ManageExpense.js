@@ -11,13 +11,13 @@ function ManageExpense({ route, navigation }) {
 
 
   const editedExpenseId = route.params?.expenseId;
-  console.log('route param', route.params)
+  // console.log('route param', route.params)
   const isEditing = !!editedExpenseId;
   // console.log('isEditing', isEditing);
 
   const selectedExpense = expensesCtx.expenses.find(
     (expense) => {
-      console.log('selectedExpense', expense.key, editedExpenseId);
+      // console.log('selectedExpense', expense.key, editedExpenseId);
       return expense.key === editedExpenseId
     }
   );
@@ -30,7 +30,7 @@ function ManageExpense({ route, navigation }) {
   }, [navigation, isEditing]);
 
 
-  function deleteExpenseHandler() {
+  async function deleteExpenseHandler() {
     console.log('deleteExpenseHandler', editedExpenseId)
     deleteExpense(editedExpenseId);
     expensesCtx.deleteExpense(editedExpenseId);
@@ -43,9 +43,10 @@ function ManageExpense({ route, navigation }) {
 
   async function confirmHandler(expenseData) {
     if (isEditing) {
-      console.log('isEditing', editedExpenseId);
+      // console.log('isEditing', expenseData);
       putExpense(editedExpenseId, expenseData);
       expensesCtx.updateExpense(editedExpenseId, expenseData);
+      console.log('ManageExpense49', expensesCtx.expenses)
     } else {
       // console.log('confirmHandler');
       // const id = new Date().toString() + Math.random().toString();
