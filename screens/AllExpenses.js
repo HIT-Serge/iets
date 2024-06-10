@@ -1,33 +1,49 @@
 import { useContext, useEffect, useState, } from 'react';
-
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
 import { ExpensesContext } from '../store/expenses-context';
 import { fetchExpenses } from '../util/http';
 import { useNavigation, } from '@react-navigation/native';
+import LoadingOverlay from '../components/UI/LoadingOverlay';
+import ErrorOverlay from '../components/UI/ErrorOverlay';
 
 function AllExpenses() {
-  // const { lastNavigated } = useContext(NavigationContext);
   const navigation = useNavigation();
-  // const [expenses, setExpenses] = useState([]);
-
-
+  const [isFetching, setIsFetching] = useState(true);
+  const [error, setError] = useState(null);
   const expensesCtx = useContext(ExpensesContext);
-  console.log('expensesCtxAll', expensesCtx.expenses);
+
   useEffect(() => {
-
     async function getExpenses() {
-      const data = await fetchExpenses();
-      // console.log('data', data);
-      expensesCtx.setExpenses(data);
-
+      try {
+        const data = await fetchExpenses();
+        expensesCtx.setExpenses(data);
+      } catch (error) {
+        setError('Could not fetch expenses. Please try again later.');
+      }
+      finally {
+        setIsFetching(false);
+      }
     }
+
     getExpenses();
   }, []);
+
+  function errorHandler() {
+    setError(null);
+  }
+
+
+  if (error && !isFetching) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />;
+  }
+
+  if (isFetching) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <ExpensesOutput
       expenses={expensesCtx.expenses}
-      // expenses={expenses}
       expensesPeriod="Total"
       fallbackText="No registered expenses found!"
     />
@@ -36,17 +52,3 @@ function AllExpenses() {
 
 export default AllExpenses;
 
-// useEffect(() => {
-//   const unsubscribe = navigation.addListener('focus', () => {
-//     // console.log('focusonAllExpenses');
-
-//     async function getExpenses() {
-//       const data = await fetchExpenses();
-//       setExpenses(data);
-//     }
-//     getExpenses();
-//   });
-
-//   // Return the unsubscribe function to clean up the listener
-//   return unsubscribe;
-// }, []);

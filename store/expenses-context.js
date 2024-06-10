@@ -13,15 +13,15 @@ function expensesReducer(state, action) {
   switch (action.type) {
     case 'SET':
       let inverted = action.payload.reverse();
-      // console.log('set_expenses-context', inverted)
+      // // console.log('set_expenses-context', inverted)
       return inverted;
     case 'ADD':
-      // console.log('add_expenses-context', state);
-      // console.log('payload_expenses-context', action.payload)
+      // // console.log('add_expenses-context', state);
+      // // console.log('payload_expenses-context', action.payload)
       return [...state, { key: action.payload.id, value: { description: action.payload.data.description, date: action.payload.data.date, amount: action.payload.data.amount, } }];
     case 'UPDATE':
-      // console.log('update', state);
-      // console.log('action.payload.data', action.payload.data)
+      // // console.log('update', state);
+      // // console.log('action.payload.data', action.payload.data)
       const updatableExpenseIndex = state.findIndex(
         (expense) =>
           expense.key == action.payload.id
@@ -30,11 +30,11 @@ function expensesReducer(state, action) {
       const updatedItem = { ...updatableExpense, value: { description: action.payload.data.description, date: action.payload.data.date, amount: action.payload.data.amount, } };
       const updatedExpenses = [...state];
       updatedExpenses[updatableExpenseIndex] = updatedItem;
-      // console.log('updatedExpenses', updatableExpense)
+      // // console.log('updatedExpenses', updatableExpense)
       return updatedExpenses;
     case 'DELETE':
-      // console.log('delete_expenses-context', action.payload);
-      // console.log('filter_expenses-context', state.filter((expense) => { console.log(expense.key); return expense.key !== action.payload }))
+      // // console.log('delete_expenses-context', action.payload);
+      // // console.log('filter_expenses-context', state.filter((expense) => { // console.log(expense.key); return expense.key !== action.payload }))
 
       return state.filter((expense) => expense.key !== action.payload);
     default:
@@ -47,15 +47,15 @@ function ExpensesContextProvider({ children }) {
 
 
   const [expensesState, dispatch] = useReducer(expensesReducer, []);
-  // console.log('update_expenses-context', expensesState);
+  // // console.log('update_expenses-context', expensesState);
 
   function addExpense(id, expenseData) {
-    // console.log('addExpense_expenses-context', id, expenseData)
+    // // console.log('addExpense_expenses-context', id, expenseData)
     dispatch({ type: 'ADD', payload: { id: id, data: expenseData } });
   }
 
   function deleteExpense(id) {
-    // console.log('delete', id)
+    // // console.log('delete', id)
     dispatch({ type: 'DELETE', payload: id });
   }
 

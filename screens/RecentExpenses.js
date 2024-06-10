@@ -4,51 +4,50 @@ import { ExpensesContext } from '../store/expenses-context';
 import { getDateMinusDays, getFormattedDate } from '../util/date';
 import { fetchExpenses } from '../util/http';
 import { useNavigation } from '@react-navigation/native';
+import LoadingOverlay from '../components/UI/LoadingOverlay';
+import ErrorOverlay from '../components/UI/ErrorOverlay';
+import { createErrorHandler } from 'expo/build/errors/ExpoErrorManager';
 
 function RecentExpenses() {
 
   const navigation = useNavigation();
-  // const [expenses, setExpenses] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
+  const [error, setError] = useState(null);
   const expensesCtx = useContext(ExpensesContext);
 
-  // console.log('expensesCtxRecent', expensesCtx.expenses);
   useEffect(() => {
-    // const unsubscribe = navigation.addListener('focus', () => {
-    // console.log('focusonRecentExpenses');
-
     async function getExpenses() {
-      const data = await fetchExpenses();
-      expensesCtx.setExpenses(data);
+      try {
+        const data = await fetchExpenses();
+        expensesCtx.setExpenses(data);
+      } catch (error) {
+        setError('Could not fetch expenses. Please try again later.');
+      }
+      finally {
+        setIsFetching(false);
+      }
     }
     getExpenses();
   }, []);
 
-
-
-
-  // Return the unsubscribe function to clean up the listener
-  // return unsubscribe;
-  // }, []);
-
-
-
-  // const updateExpenses = expensesCtx.expenses;
+  function errorHandler() {
+    setError(null);
+  }
   const recentExpenses = expensesCtx.expenses.filter((expense) => {
-    // const recentExpenses = expenses.filter((expense) => {
-    // console.log('recentExpense', expense.value.date);
-    // let itemDate = getDateMinusDays(new Date())
     let itemDate = new Date(expense.value.date);
-    console.log('itemDate', itemDate);
     let today = new Date();
-    // today.setHours(0, 0, 0, 0);
     const date7DaysAgo = getDateMinusDays(today, 7);
-    console.log("dates", itemDate, date7DaysAgo);
-
 
     return itemDate >= date7DaysAgo;
-
   });
-  // console.log('recentExpenses', recentExpenses)
+  // // console.log('recentExpenses', recentExpenses)
+
+  if (error && !isFetching) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />;
+  }
+  if (isFetching) {
+    return <LoadingOverlay />;
+  }
 
   return (
 

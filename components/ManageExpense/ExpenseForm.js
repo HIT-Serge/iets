@@ -7,7 +7,7 @@ import { getFormattedDate } from '../../util/date';
 import { GlobalStyles } from '../../constants/styles';
 
 function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
-  // console.log('defaultValues', defaultValues);
+  // // console.log('defaultValues', defaultValues);
   const [inputs, setInputs] = useState({
     amount: {
       value: defaultValues ? defaultValues.value.amount.toString() : '',
@@ -22,7 +22,7 @@ function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
       isValid: true,
     },
   });
-  // console.log('inputs', inputs);
+  // // console.log('inputs', inputs);
 
   function inputChangedHandler(inputIdentifier, enteredValue) {
     setInputs((curInputs) => {
@@ -61,7 +61,7 @@ function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     }
 
     onSubmit(expenseData);
-    console.log('expenseData', expenseData);
+    // console.log('expenseData', expenseData);
   }
 
   const formIsInvalid =

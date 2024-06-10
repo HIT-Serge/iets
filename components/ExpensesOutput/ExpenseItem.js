@@ -7,21 +7,21 @@ function ExpenseItem(props) {
   // { id, description, amount, date }
   const navigation = useNavigation();
   const route = useRoute()
-  // console.log('id1', props.item);
+  // // console.log('id1', props.item);
 
   function expensePressHandler() {
-    console.log('expensePressHandler');
+    // console.log('expensePressHandler');
     let id = props.item.key ? props.item.key : '';
     navigation.navigate('ManageExpense', {
       expenseId: id
     });
-    // console.log('navigate', route.params.expenseId)
+    // // console.log('navigate', route.params.expenseId)
   }
 
 
 
 
-  // console.log('date', date);
+  // // console.log('date', date);
 
   let textDate = props.item.value.date ? getFormattedDate(props.item.value.date) : '';
   return (
